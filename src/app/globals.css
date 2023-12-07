@@ -91,6 +91,9 @@
   .job-summary-des {
     @apply font-normal text-gray-700;
   }
+  .active_link {
+    @apply text-green-500 font-bold border-b-2 border-green-500;
+  }
 }
 
 /* custom css */

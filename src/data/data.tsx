@@ -8,6 +8,10 @@ import WebIcon from "@/components/icon/WebIcon";
 
 export const division = [
   {
+    id: 0,
+    city: "all"
+  },
+  {
     id: 1,
     city: "Barishal",
   },
@@ -44,7 +48,7 @@ export const division = [
 export const category = [
   {
     id: 1,
-    text: "Web developer",
+    text: "web developer",
     icon: <WebIcon />
   },
   {
@@ -63,28 +67,28 @@ export const category = [
     icon: <Graphic />
   },
   {
-    id: 1,
+    id: 5,
     text: "ui/ux designer",
     icon: <UxIcon />
   },
 
   {
-    id: 1,
+    id: 6,
     text: "content writer",
     icon: <ContentIcon />
   },
   {
-    id: 1,
+    id: 7,
     text: "seo expert",
     icon: <WebIcon />
   },
   {
-    id: 1,
+    id: 8,
     text: "digital marketing",
     icon: <WebIcon />
   },
   {
-    id: 1,
+    id: 9,
     text: "data entry",
     icon: <WebIcon />
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Form,
     FormControl,
@@ -23,6 +23,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from '@/components/ui/button'
+import { useAppDispatch } from '@/store/hook';
+import { useToast } from '@/components/ui/use-toast';
+import { useSignInUserMutation } from '@/store/api/userApi';
+import { setCookie } from 'cookies-next';
+import { getUserToken } from '@/store/features/userSlice';
+import { useRouter } from 'next/navigation';
 
 
 const FormSchema = z.object({
@@ -35,14 +41,42 @@ const FormSchema = z.object({
 })
 
 const SignIn = () => {
-
+    const [signInUser, { isLoading, error, isSuccess, data }] = useSignInUserMutation();
+    const dispatch = useAppDispatch();
+    const { toast } = useToast()
+    const router = useRouter();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
 
     })
 
+    //error message handler
+    useEffect(() => {
+        if (error) {
+            toast({
+                title: (error as any)?.data?.message,
+                variant: "destructive"
+            })
+        }
+    }, [error, toast])
+
+    //success message handler
+    useEffect(() => {
+        if (isSuccess) {
+            toast({
+                title: "Account created successful",
+                description: "Thank you for create account",
+            })
+
+            setCookie("access_token", data?.token, { maxAge: 60 * 6 * 24 })
+            dispatch(getUserToken(data?.token))
+            router.push("/")
+        }
+    }, [isSuccess, toast, router, dispatch, data?.token])
+
+
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
-        console.log(data)
+        signInUser(data)
     }
     return (
         <Card>
@@ -87,7 +121,7 @@ const SignIn = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit" disabled={isLoading}>{isLoading ? "Loading..." : "SUbmit"}</Button>
                     </CardContent>
                 </form>
 

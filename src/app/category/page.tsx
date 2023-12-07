@@ -1,10 +1,15 @@
 import Category from '@/components/shared/Category'
 import Container from '@/components/shared/Container'
-import React from 'react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: "Category"
+}
+
 
 const page = () => {
     return (
-        <Container>
+        <Container className='mt-20'>
             <Category />
         </Container>
     )

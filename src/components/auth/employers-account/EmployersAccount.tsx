@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "@/components/shared/Container"
 import {
     Tabs,
@@ -11,8 +13,8 @@ import CreateAccount from './CreateAccount';
 const EmployersAccount = () => {
     return (
         <Container>
-            <Tabs defaultValue="create-account" >
-                <TabsList className="grid w-full grid-cols-2 w-1/2 mx-auto">
+            <Tabs defaultValue="sign-in" className="sm:w-4/5 mx-auto">
+                <TabsList className=" grid grid-cols-2">
                     <TabsTrigger value="create-account">Create Account</TabsTrigger>
                     <TabsTrigger value="sign-in">Log In </TabsTrigger>
                 </TabsList>
@@ -22,7 +24,7 @@ const EmployersAccount = () => {
                 </TabsContent>
 
                 {/* sign in user  */}
-                <TabsContent className="w-1/2 mx-auto" value="sign-in">
+                <TabsContent value="sign-in">
                     <SignIn />
                 </TabsContent>
             </Tabs>

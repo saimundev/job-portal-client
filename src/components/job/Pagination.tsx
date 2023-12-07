@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import { Button } from '../ui/button'
 import ArrowRight from '../icon/ArrowRight'
@@ -11,22 +13,36 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { PaginationProps } from '@/types/types'
+import { useRouter, useSearchParams } from "next/navigation"
 
-const Pagination = () => {
+const Pagination = ({ pagination }: { pagination: PaginationProps }) => {
+    const router = useRouter();
+    const params = useSearchParams();
+    const page = params.get("page") || 1;
+    const per_page = params.get("per_page") || 10;
+    const location = params.get("location") || "all";
+    const salary = params.get("salary") || "any";
+    // const date = params.get("date") || "any"
+    const experience = params.get("experience") || "any"
+    const employmentType = params.get("employmentType") || "any"
     return (
         <div className="flex items-center justify-end gap-6 mt-10">
             <div className="flex items-center space-x-2">
                 <p className="text-text-primary text-sm font-medium">Rows per page</p>
-                <Select>
+                <Select
+                    onValueChange={(value) => router.push(`?page=${page}&per_page=${value}&location=${location}&salary=${salary}&experience=${experience}&employmentType=${employmentType}`)}
+                >
                     <SelectTrigger className="h-9 w-[80px] border border-green-500">
-                        <SelectValue placeholder="10" />
+                        <SelectValue placeholder={per_page} />
                     </SelectTrigger>
                     <SelectContent side="top">
-                        {[10, 20, 40, 60, 80, 100].map((pageSize) => (
+                        {[10, 20, 40, 60, 80, 100].map((pageSize: any) => (
                             <SelectItem
                                 className="text-text-primary"
                                 key={pageSize}
-                                value={`${pageSize}`}
+                                value={pageSize}
+
                             >
                                 {pageSize}
                             </SelectItem>
@@ -35,18 +51,22 @@ const Pagination = () => {
                 </Select>
             </div>
             <div className="text-text-primary text-sm font-medium">
-                Page 2 of 10
+                Page {pagination?.totalPage} of {pagination?.totalDocuments}
             </div>
+
+            {/* pagination */}
             <div className="flex justify-end gap-4">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" disabled={Number(page) <= 1 ? true : false}
+                    onClick={() => router.push(`?page=${Number(page) - 1}&per_page=${per_page}&location=${location}&salary=${salary}&experience=${experience}&employmentType=${employmentType}`)}>
                     <ArrowLeftIcon />
 
                 </Button>
-                <Button variant="outline" size="sm">
+
+                <Button variant="outline" disabled={Number(page) <= pagination.lastPage ? true : false} size="sm" onClick={() => router.push(`?page=${Number(page) + 1}&per_page=${per_page}&location=${location}&salary=${salary}&experience=${experience}&employmentType=${employmentType}`)}>
                     <ArrowRight />
                 </Button>
             </div>
-        </div>
+        </div >
     )
 }
 

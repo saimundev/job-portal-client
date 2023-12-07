@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react'
 import {
     Form,
     FormControl,
@@ -33,6 +32,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { division } from '@/data/data';
+import { useCallback, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import UploadIcon from "@/components/icon/UploadIcon";
+import axios from "axios"
+import { useToast } from "@/components/ui/use-toast"
+import { useAppDispatch, useAppSelector } from "@/store/hook";
+import { useSignUpEmploymentMutation } from "@/store/api/employmentApi";
+import { setCookie } from "cookies-next";
+import { getUserToken } from "@/store/features/userSlice";
+import { useRouter } from "next/navigation";
+
 
 
 
@@ -46,25 +57,118 @@ const FormSchema = z.object({
     password: z.string().min(3, {
         message: "password must be at least 5 characters.",
     }),
+    companyName: z.string().min(5, {
+        message: "company name must be at least 5 characters.",
+    }),
+    companySize: z.string(),
+    companyLocation: z.string(),
+    companyAddress: z.string(),
+    companyDescription: z.string(),
+    tradeLicense: z.string(),
+    websiteURL: z.string().url(),
 })
 
 const CreateAccount = () => {
-
+    const [logoImage, setLogoImage] = useState<any>(null)
+    const [uploadStatus, setUploadStatus] = useState(false);
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
 
     })
 
+    const { toast } = useToast()
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+    const [createEmployment, { isLoading, error, data, isSuccess }] = useSignUpEmploymentMutation();
 
+
+    const onDrop = useCallback((acceptedFiles: any) => {
+        if (acceptedFiles) {
+            setUploadStatus(true)
+            const image = acceptedFiles[0]
+            const formData = new FormData();
+            formData.append("logo_image", image);
+            axios.post("http://localhost:5050/api/employer/upload-image", formData).then((res) => {
+                setLogoImage(res.data)
+                setUploadStatus(false)
+                toast({
+                    title: "image upload successful",
+                })
+            }).catch((error) => {
+                toast({
+                    title: "Something went wrong",
+                    description: "please try again",
+                    variant: "destructive"
+                })
+                setUploadStatus(false)
+            })
+
+        }
+    }, [toast])
+
+
+    const { getRootProps, getInputProps, fileRejections } = useDropzone({
+        onDrop,
+        multiple: false,
+        accept: {
+            "image/png": [".png"],
+            "image/jpg": [".jpg"],
+            "image/jpeg": [".jpeg"],
+        },
+        maxSize: 5242880
+
+    })
+
+    const rejectionFile = fileRejections[0]?.errors?.map((error) => {
+        return error.message
+    })
+
+    //error message handler
+    useEffect(() => {
+        if (error) {
+            toast({
+                title: (error as any)?.data?.message,
+                variant: "destructive"
+            })
+        }
+    }, [error, toast])
+
+    //success message handler
+    useEffect(() => {
+        if (isSuccess) {
+            toast({
+                title: "Account created successful",
+                description: "Thank you for create account",
+            })
+
+            setCookie("access_token", data?.token)
+            dispatch(getUserToken(data?.token))
+            router.push("/")
+        }
+    }, [isSuccess, router, toast, dispatch, data?.token])
+
+
+
+
+    // create employment 
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
-        console.log(data)
+        if (!logoImage) {
+            toast({
+                title: "please upload a image",
+                variant: "destructive"
+            })
+
+            return
+        }
+        createEmployment({ ...data, image_url: logoImage?.image_url, image_id: logoImage?.image_id })
+
     }
     return (
         <Card>
             <CardHeader className='text-center'>
                 <CardTitle>Create Account</CardTitle>
                 <CardDescription>
-                    Create your account and find your dream job by Dashjob
+                    Create your account and find your dream job by DashJob
                 </CardDescription>
             </CardHeader>
 
@@ -74,15 +178,15 @@ const CreateAccount = () => {
                     <CardContent className="space-y-8">
                         {/* personal info */}
                         <div className="">
-                            <h2 className="text-green-500 text-lg font-semibold">Account Information</h2>
-                            <div className="grid grid-cols-3 gap-4 mt-4">
+                            <h2 className="text-lg font-semibold text-green-500">Account Information</h2>
+                            <div className="sm:grid-cols-3 grid grid-cols-1 gap-4 mt-4">
                                 {/* name field */}
                                 <FormField
                                     control={form.control}
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Company Name</FormLabel>
+                                            <FormLabel>Name</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="Enter your name" {...field} />
                                             </FormControl>
@@ -125,12 +229,12 @@ const CreateAccount = () => {
 
                         {/* company details */}
                         <div className="">
-                            <h2 className="text-green-500 text-lg font-semibold">Company Details Information</h2>
-                            <div className="grid grid-cols-2 gap-4 mt-4">
+                            <h2 className="text-lg font-semibold text-green-500">Company Details Information</h2>
+                            <div className="sm:grid-cols-2 grid grid-cols-1 gap-4 mt-4">
                                 {/* company name field */}
                                 <FormField
                                     control={form.control}
-                                    name="name"
+                                    name="companyName"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Company Name</FormLabel>
@@ -145,7 +249,7 @@ const CreateAccount = () => {
                                 {/* company size field */}
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="companySize"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Company Size</FormLabel>
@@ -156,9 +260,10 @@ const CreateAccount = () => {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                                                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                                                    <SelectItem value="m@support.com">m@support.com</SelectItem>
+                                                    <SelectItem value="1-25 employees">1-25 employees</SelectItem>
+
+                                                    <SelectItem value="1-50 employees">1-50 employees</SelectItem>
+                                                    <SelectItem value="1-100 employees">1-100 employees</SelectItem>
                                                 </SelectContent>
                                             </Select>
 
@@ -170,7 +275,7 @@ const CreateAccount = () => {
                                 {/* company address division field */}
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="companyLocation"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Company Address</FormLabel>
@@ -181,34 +286,11 @@ const CreateAccount = () => {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                                                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                                                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                                                </SelectContent>
-                                            </Select>
+                                                    {division?.slice(1, division?.length)?.map((location) => (
+                                                        <SelectItem key={location.id} value={location.city}>{location.city}</SelectItem>
+                                                    ))}
 
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
 
-                                {/* company type field */}
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Industry Type</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select Industry Type" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                                                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                                                    <SelectItem value="m@support.com">m@support.com</SelectItem>
                                                 </SelectContent>
                                             </Select>
 
@@ -220,7 +302,7 @@ const CreateAccount = () => {
                                 {/* company address field */}
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="companyAddress"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Write Company Address</FormLabel>
@@ -235,7 +317,7 @@ const CreateAccount = () => {
                                 {/* company description field */}
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="companyDescription"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Write Company Description</FormLabel>
@@ -250,7 +332,7 @@ const CreateAccount = () => {
                                 {/* trade license field */}
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="tradeLicense"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Business/ Trade License No</FormLabel>
@@ -265,7 +347,7 @@ const CreateAccount = () => {
                                 {/* password field */}
                                 <FormField
                                     control={form.control}
-                                    name="password"
+                                    name="websiteURL"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Website URL</FormLabel>
@@ -276,14 +358,40 @@ const CreateAccount = () => {
                                         </FormItem>
                                     )}
                                 />
+
+                                {/* company logo field */}
+                                <div className="">
+                                    {logoImage ? <img className=" h-[150px] w-[150px] mx-auto rounded-full  object-cover" src={logoImage?.image_url} alt="" /> : <div {...getRootProps()} className={`${rejectionFile?.length && "border-red-500 "} border-input  place-items-center grid w-full p-4 text-center border-2 border-dashed cursor-pointer`}>
+                                        <input  {...getInputProps()} />
+                                        <div className="text-sm text-gray-500">
+                                            <UploadIcon className="w-8 h-8 mx-auto" />
+                                            <div className="">
+                                                {uploadStatus ? <div className="">Uploading...</div> : <div className=""> <p className="mt-4 font-semibold">Click to upload or drag and drop</p>
+                                                    <p className="mt-2 text-xs">PNG, JPG or JPEG (MAX 5 MB)</p></div>}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    }
+                                    {/* file error message */}
+                                    <div className="">
+                                        {rejectionFile &&
+                                            <p className="whitespace-nowrap mt-2 text-sm font-medium text-red-500">{rejectionFile}</p>
+                                        }
+                                    </div>
+
+                                </div>
+
+
+
+
                             </div>
                         </div>
-                        <Button type="submit" size="lg">Submit</Button>
+                        <Button type="submit" size="lg" disabled={uploadStatus || isLoading}> {isLoading ? "Loading...." : "Submit"}</Button>
                     </CardContent>
                 </form>
 
             </Form>
-
         </Card>
     )
 }
