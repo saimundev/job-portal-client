@@ -1,11 +1,16 @@
 import { jobInfoProps } from '@/types/types'
 import parse from 'html-react-parser';
+import Favorite from '../icon/Favorite';
+import FavoriteJob from './FavoriteJob';
 
 const Details = ({ jobDetailsData }: { jobDetailsData: jobInfoProps }) => {
 
     return (
         <div className="p-4 bg-white">
-            <h2 className="text-2xl font-semibold text-green-500">{jobDetailsData.jobTitle}</h2>
+            <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold text-green-500">{jobDetailsData.jobTitle}</h2>
+                <FavoriteJob jobDetailsData={jobDetailsData} />
+            </div>
             <h3 className="mt-2 text-lg font-semibold">{jobDetailsData.companyName}</h3>
 
             <div className="mt-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from './Container'
 import Link from 'next/link'
 import { Button } from '../ui/button'
@@ -22,9 +22,11 @@ import {
 } from "@/components/ui/avatar"
 import HamburgerIcon from '../icon/HamburgerIcon';
 import { useAppSelector, useAppDispatch } from '@/store/hook';
-import { deleteCookie } from 'cookies-next';
+import { deleteCookie, getCookie } from 'cookies-next';
 import { logOut } from '@/store/features/userSlice';
 import { cn } from '@/lib/utils';
+import Favorite from '../icon/Favorite';
+import { jwtDecode } from "jwt-decode"
 
 
 const Header = () => {
@@ -34,6 +36,21 @@ const Header = () => {
     const router = useRouter();
     const pathname = usePathname();
     const dispatch = useAppDispatch();
+    const token = getCookie("access_token");
+    const decode = token ? jwtDecode(token) : null
+    const expToken = Number(new Date()) / 1000 >= (decode as any)?.exp
+
+    //user logout when jwt token is expire
+    useEffect(() => {
+        if (expToken) {
+            deleteCookie("access_token")
+            dispatch(logOut())
+            router.push("/")
+        }
+    }, [expToken, dispatch])
+
+
+
     const handleUserAccountLink = () => {
         router.push("/user-account")
     }
@@ -42,12 +59,9 @@ const Header = () => {
         router.push("/employers-account")
     }
 
-    const handlePostJob = () => {
-        router.push("/post-job")
-    }
 
-    const goProfileRoute = () => {
-        router.push("/profile")
+    const handleFavoriteRoute = () => {
+        router.push("/favorite")
     }
 
     const handleLogOut = () => {
@@ -74,7 +88,7 @@ const Header = () => {
 
 
 
-            <div className="root">
+            <div className="root flex items-center">
                 {/* Log in user status */}
                 <div className="flex gap-4">
                     {isLogin ? (
@@ -112,68 +126,76 @@ const Header = () => {
                 </div>
 
 
+                {/* not login user status */}
                 <div className="sm:block hidden">
-                    {/* not login user status */}
-                    {!isLogin ? (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">Sign in or Create account</Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[350px] px-4">
+                    <div className="flex items-center gap-4">
+                        <div className="">
+
+                            {!isLogin ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline" size="sm">Sign in or Create account</Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-[350px] px-4">
 
 
 
-                                <div className="flex gap-4">
-                                    <div className="">
-                                        <div className="w-14 h-14 flex items-center justify-center mt-4 bg-blue-500 rounded-full">
-                                            <LaptopIcon className='w-10 h-10 text-white' />
+                                        <div className="flex gap-4">
+                                            <div className="">
+                                                <div className="w-14 h-14 flex items-center justify-center mt-4 bg-blue-500 rounded-full">
+                                                    <LaptopIcon className='w-10 h-10 text-white' />
+                                                </div>
+                                            </div>
+
+                                            <div className="">
+                                                <DropdownMenuLabel className="text-base text-center text-gray-600">User Account</DropdownMenuLabel>
+                                                <p className="text-sm text-gray-500">Sign in or create your My Bdjobs account to manage your profile</p>
+                                                <div className="flex justify-between mt-2">
+                                                    <DropdownMenuItem>
+                                                        <Button variant="link" className="hover:bg-green-500 hover:text-white" onClick={handleUserAccountLink}>
+                                                            Log In
+                                                        </Button>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        <Button variant="link" onClick={handleUserAccountLink}>Create Account</Button>
+                                                    </DropdownMenuItem>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>
 
-                                    <div className="">
-                                        <DropdownMenuLabel className="text-base text-center text-gray-600">User Account</DropdownMenuLabel>
-                                        <p className="text-sm text-gray-500">Sign in or create your My Bdjobs account to manage your profile</p>
-                                        <div className="flex justify-between mt-2">
-                                            <DropdownMenuItem>
-                                                <Button variant="link" className="hover:bg-green-500 hover:text-white" onClick={handleUserAccountLink}>
-                                                    Log In
-                                                </Button>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Button variant="link" onClick={handleUserAccountLink}>Create Account</Button>
-                                            </DropdownMenuItem>
+                                        <div className="flex gap-4 mt-2">
+                                            <div className="">
+                                                <div className="w-14 h-14 flex items-center justify-center mt-4 bg-blue-900 rounded-full">
+                                                    <UserIcon className='w-10 h-10 text-white' />
+                                                </div>
+                                            </div>
+
+                                            <div className="">
+                                                <DropdownMenuLabel className="text-base text-center text-gray-600">Employers</DropdownMenuLabel>
+                                                <p className="text-sm text-gray-500">Sign in or create account to find the best candidates in the fastest way</p>
+                                                <div className="flex justify-between mt-2">
+                                                    <DropdownMenuItem>
+                                                        <Button variant="link" className="hover:bg-green-500 hover:text-white" onClick={handleEmployersLink}>Log In</Button>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        <Button variant="link" onClick={handleEmployersLink}>Create Account</Button>
+                                                    </DropdownMenuItem>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>
-
-                                </div>
-
-                                <div className="flex gap-4 mt-2">
-                                    <div className="">
-                                        <div className="w-14 h-14 flex items-center justify-center mt-4 bg-blue-900 rounded-full">
-                                            <UserIcon className='w-10 h-10 text-white' />
-                                        </div>
-                                    </div>
-
-                                    <div className="">
-                                        <DropdownMenuLabel className="text-base text-center text-gray-600">Employers</DropdownMenuLabel>
-                                        <p className="text-sm text-gray-500">Sign in or create account to find the best candidates in the fastest way</p>
-                                        <div className="flex justify-between mt-2">
-                                            <DropdownMenuItem>
-                                                <Button variant="link" className="hover:bg-green-500 hover:text-white" onClick={handleEmployersLink}>Log In</Button>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Button variant="link" onClick={handleEmployersLink}>Create Account</Button>
-                                            </DropdownMenuItem>
-                                        </div>
-                                    </div>
-
-                                </div>
 
 
 
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    ) : ""}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : ""}
+                        </div>
+                        <div className="" onClick={handleFavoriteRoute}>
+                            <Favorite className='cursor-pointer' />
+                        </div>
+                    </div>
                 </div>
             </div>
 

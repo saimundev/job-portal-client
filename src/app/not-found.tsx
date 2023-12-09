@@ -1,9 +1,13 @@
+import Container from '@/components/shared/Container'
+import NotFound from '@/components/svg/NotFound'
 import React from 'react'
 
-const NotFound = () => {
+const NotFoundPage = () => {
     return (
-        <div>NotFound</div>
+        <Container className='py-20'>
+            <NotFound className='w-80 h-80 mx-auto' />
+        </Container>
     )
 }
 
-export default NotFound
+export default NotFoundPage

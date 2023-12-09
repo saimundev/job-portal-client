@@ -6,9 +6,10 @@ import Sidebar from '@/components/job/Sidebar'
 import Container from '@/components/shared/Container'
 import JobShowCart from '@/components/shared/JobShowCart'
 import JobCartSkeleton from '@/components/skeleton/JobCartSkeleton';
+import EmptyData from '@/components/svg/EmptyData';
 import useParams from '@/hooks/useParams'
 import { useGetJobQuery } from '@/store/api/jobApi'
-import { PaginationProps, jobInfoProps } from '@/types/types'
+import { jobInfoProps } from '@/types/types'
 
 
 const JobsPage = () => {
@@ -51,7 +52,10 @@ const JobsPage = () => {
                         data?.jobs?.map((job: jobInfoProps) => (
                             <JobShowCart job={job} key={job._id} />
                         ))
-                        : <div className="place-content-center mt-20 text-lg font-semibold text-center">Job Not Found</div>}
+                        : <div className="text-center">
+                            <EmptyData className='w-60 h-60 mx-auto mt-20' />
+                            <h3 className='text-xl font-semibold text-green-500'>Data not found</h3>
+                        </div>}
 
                     {/* pagination start from here */}
                     {data?.jobs?.length ? <Pagination pagination={data?.metadata} /> : null}
