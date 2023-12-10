@@ -11,7 +11,7 @@ const Feature = () => {
   return (
     <div className="mt-20">
       <div className="text-center">
-        <h2 className=" sm:text-4xl text-2xl font-medium">Why DashJob?</h2>
+        <h2 className=" sm:text-4xl text-2xl font-medium">Why DeshJob?</h2>
         <p className="lg:text-xl mt-4 text-base text-gray-500">Motivated by our vision to Employ the World, we believe through exceptional service and innovation we can create greater accessibility for both job seekers and employers. Our technology provides the opportunity to experience modern recruitment methods on one comprehensive, cost-effective and convenient platform.</p>
       </div>
       <div className="lg:grid-cols-2 sm:gird-cols-1 grid gap-4 mt-10">

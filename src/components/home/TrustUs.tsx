@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee";
 const TrustUs = () => {
     return (
         <div className='mt-20'>
-            <h2 className='lg:text-4xl mb-8 text-2xl font-medium text-center'>DashJob is trusted by</h2>
+            <h2 className='lg:text-4xl mb-8 text-2xl font-medium text-center'>DeshJob is trusted by</h2>
             <div className="py-6 bg-white rounded-lg">
                 <Marquee speed={100} gradient gradientWidth={100} gradientColor="rgb(248,251,254)" className="sm:space-x-16 space-x-8">
                     <div className="sm:gap-32 flex gap-12">

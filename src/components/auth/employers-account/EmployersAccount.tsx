@@ -13,7 +13,7 @@ import CreateAccount from './CreateAccount';
 const EmployersAccount = () => {
     return (
         <Container>
-            <Tabs defaultValue="sign-in" className="sm:w-4/5 mx-auto">
+            <Tabs defaultValue="sign-in" className="sm:w-4/5 mx-auto mt-10">
                 <TabsList className=" grid grid-cols-2">
                     <TabsTrigger value="create-account">Create Account</TabsTrigger>
                     <TabsTrigger value="sign-in">Log In </TabsTrigger>

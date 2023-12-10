@@ -55,7 +55,7 @@ const Banner = () => {
 
     return (
         <div className="text-center">
-            <h1 className="lg:text-5xl text-3xl font-semibold">Find Your Dream<span className="text-green-500"> IT</span> Job BY DashJ<span className="font-bold text-green-500">O</span>b</h1>
+            <h1 className="lg:text-5xl text-3xl font-semibold">Find Your Dream<span className="text-green-500"> IT</span> Job BY DeshJ<span className="font-bold text-green-500">O</span>b</h1>
             <p className="lg:text-sm mt-4 text-xs font-medium text-gray-500">Let us connect you with your next employer or employee.</p>
 
             {/* job search bar  */}

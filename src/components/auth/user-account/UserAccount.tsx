@@ -27,7 +27,7 @@ import SignIn from './SignIn';
 const UserAccount = () => {
     return (
         <Container>
-            <Tabs defaultValue="sign-in" className="sm:w-1/2 mx-auto">
+            <Tabs defaultValue="sign-in" className="sm:w-1/2 mx-auto mt-10">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="create-account">Create Account</TabsTrigger>
                     <TabsTrigger value="sign-in">Log In</TabsTrigger>

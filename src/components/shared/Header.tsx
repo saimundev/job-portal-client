@@ -75,7 +75,7 @@ const Header = () => {
 
     return (
         <Container className="relative flex items-center justify-between py-2 border-b border-gray-200">
-            <div className=" text-2xl font-semibold">DashJ<span className='font-bold text-green-500'>O</span>b</div>
+            <div className=" text-2xl font-semibold">DeshJ<span className='font-bold text-green-500'>O</span>b</div>
 
             <div className="sm:block hidden">
                 <div className="flex gap-4">

@@ -45,6 +45,7 @@ import { CalendarIcon } from "lucide-react"
 import { useAppSelector } from '@/store/hook';
 import dynamic from 'next/dynamic';
 import Container from '@/components/shared/Container';
+import { useRouter } from "next/navigation"
 
 
 
@@ -83,6 +84,7 @@ const PostUserJob = () => {
 
     })
     const { toast } = useToast()
+    const router = useRouter();
 
 
     const [createJob, { isLoading, error, isSuccess }] = useCreateJobMutation();
@@ -106,7 +108,7 @@ const PostUserJob = () => {
             toast({
                 title: "Job create successful",
             })
-            // router.push("/profile")
+            router.push("/profile")
         }
 
     }, [isSuccess, toast])
@@ -117,10 +119,10 @@ const PostUserJob = () => {
     //handle submit form
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
 
-        // if (!jobContext || !jobResponsibilities || !jobBenefit) {
-        //     setEmptyError(true);
-        //     return;
-        // }
+        if (!jobContext || !jobResponsibilities || !jobBenefit) {
+            setEmptyError(true);
+            return;
+        }
 
 
         //send job data to api
