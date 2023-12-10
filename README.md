@@ -16,5 +16,6 @@
 </ul>
 
 <br>
-<img src="https://ibb.co/jT57YVX"/>
-<img src="https://ibb.co/vw4B0cn"/>
+<img src="https://i.ibb.co/qrwgHcp/screencapture-deshjob-vercel-app-2023-12-10-22-41-58.png"/>
+<img src="https://i.ibb.co/Wxv3mHJ/screencapture-deshjob-vercel-app-job-2023-12-10-22-44-37-1.png"/>
+<img src="https://i.ibb.co/drcnvbY/screencapture-deshjob-vercel-app-post-job-2023-12-10-22-46-03.png"/>
