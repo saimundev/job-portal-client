@@ -68,7 +68,7 @@ const ProfilePage = () => {
             const image = acceptedFiles[0]
             const formData = new FormData();
             formData.append("logo_image", image);
-            axios.post("http://localhost:5050/api/employer/upload-image", formData).then((res) => {
+            axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}employer/upload-image`, formData).then((res) => {
                 setProfile(res.data)
                 setUploadStatus(false)
                 toast({
