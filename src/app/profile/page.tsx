@@ -122,7 +122,6 @@ const ProfilePage = () => {
 
     }
 
-    console.log(data)
     return (
         <Container className="h-screen">
             <div className="sm:w-1/2 p-4 mx-auto mt-20 rounded shadow">

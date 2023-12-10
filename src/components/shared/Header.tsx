@@ -27,6 +27,7 @@ import { logOut } from '@/store/features/userSlice';
 import { cn } from '@/lib/utils';
 import Favorite from '../icon/Favorite';
 import { jwtDecode } from "jwt-decode"
+import { useGetUserQuery } from '@/store/api/userApi';
 
 
 const Header = () => {
@@ -39,6 +40,9 @@ const Header = () => {
     const token = getCookie("access_token");
     const decode = token ? jwtDecode(token) : null
     const expToken = Number(new Date()) / 1000 >= (decode as any)?.exp
+    const userId = useAppSelector((state) => state.user?.user?.userId)
+
+    const { data, isLoading: loading, isError: error } = useGetUserQuery({ userId })
 
     //user logout when jwt token is expire
     useEffect(() => {
@@ -95,8 +99,8 @@ const Header = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger>
                                 <Avatar className="sm:w-10 sm:h-10 w-8 h-8 border border-green-500" >
-                                    <AvatarImage src="" alt="@shadcn" sizes='4xl' />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarImage src={data ? data?.profile : null} alt="profile_image" sizes='4xl' />
+                                    <AvatarFallback className='text-lg'>{data ? data?.name?.slice(0, 1) : "P"}</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent >
@@ -240,7 +244,7 @@ const Header = () => {
 
                                                 <div className="">
                                                     <DropdownMenuLabel className="text-base text-center text-gray-600">User Account</DropdownMenuLabel>
-                                                    <p className="text-sm text-gray-500">Sign in or create your My Bdjobs account to manage your profile</p>
+                                                    <p className="text-sm text-gray-500">Sign in or create your My Deshjob account to manage your profile</p>
                                                     <div className="flex justify-between mt-2">
                                                         <DropdownMenuItem>
                                                             <Button variant="link" className="hover:bg-green-500 hover:text-white" onClick={handleUserAccountLink}>
