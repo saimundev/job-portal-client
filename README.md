@@ -21,6 +21,6 @@
 <h3>Job Page</h3>
 <img src="https://i.ibb.co/Wxv3mHJ/screencapture-deshjob-vercel-app-job-2023-12-10-22-44-37-1.png"/>
 <h3>Job Details Page</h3>
-<img src="https://i.ibb.co/Wxv3mHJ/screencapture-deshjob-vercel-app-job-2023-12-10-22-44-37-1.png"/>
+<img src="https://i.ibb.co/xJ4d4PW/screencapture-deshjob-vercel-app-job-6575d12872186b33ee3fed83-2023-12-10-23-05-40.png"/>
 <h3>Apply Job Page</h3>
 <img src="https://i.ibb.co/drcnvbY/screencapture-deshjob-vercel-app-post-job-2023-12-10-22-46-03.png"/>
