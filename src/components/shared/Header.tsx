@@ -28,6 +28,7 @@ import { cn } from '@/lib/utils';
 import Favorite from '../icon/Favorite';
 import { jwtDecode } from "jwt-decode"
 import { useGetUserQuery } from '@/store/api/userApi';
+import { useGetEmploymentQuery } from '@/store/api/employmentApi';
 
 
 const Header = () => {
@@ -43,6 +44,7 @@ const Header = () => {
     const userId = useAppSelector((state) => state.user?.user?.userId)
 
     const { data, isLoading: loading, isError: error } = useGetUserQuery({ userId })
+    const { data: employmentData } = useGetEmploymentQuery({ userId });
 
     //user logout when jwt token is expire
     useEffect(() => {
@@ -99,8 +101,8 @@ const Header = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger>
                                 <Avatar className="sm:w-10 sm:h-10 w-8 h-8 border border-green-500" >
-                                    <AvatarImage src={data ? data?.profile : null} alt="profile_image" sizes='4xl' />
-                                    <AvatarFallback className='text-lg'>{data ? data?.name?.slice(0, 1) : "P"}</AvatarFallback>
+                                    <AvatarImage src={data ? data?.profile : employmentData?.image_url} alt="profile_image" sizes='4xl' />
+                                    <AvatarFallback className='text-lg'>{data ? data?.name?.slice(0, 1) : employmentData?.name?.slice(0, 1)}</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent >

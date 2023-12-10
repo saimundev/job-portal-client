@@ -23,7 +23,7 @@ const Details = ({ jobDetailsData }: { jobDetailsData: jobInfoProps }) => {
                 <ul className="details-des list-none">
                     <li
                         dangerouslySetInnerHTML={{ __html: jobDetailsData.jobContext }}
-                        className="list-none"
+                        className=" list-none"
                     />
                 </ul>
             </div>

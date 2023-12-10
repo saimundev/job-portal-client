@@ -51,7 +51,6 @@ export async function generateMetadata({ params: { id } }: ParamsProps): Promise
 }
 
 
-
 const page = async ({ params: { id } }: ParamsProps) => {
     const jobData: jobInfoProps = await getJobById(id);
     return (
@@ -79,7 +78,7 @@ const page = async ({ params: { id } }: ParamsProps) => {
                         <div className="mt-12">
                             <h4 className='text-lg font-semibold'>Email</h4>
                             <h5 className='mt-4'>Send your CV to <strong>{jobData?.applyEmail}</strong> </h5>
-                            <p className="mt-2 text-sm text-gray-700">Application Deadline : <strong>{moment(jobData.deadline).format("D MMMM YYYY")}</strong> </p>
+                            <p className="mt-2 text-sm text-gray-700">Application Deadline : <strong>{moment(jobData?.deadline).format("D MMMM YYYY")}</strong> </p>
                         </div>
                     </div>
                 </div>

@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { useGetJobByEmploymentQuery } from '@/store/api/jobApi'
 import React from 'react'
 import { useSearchParams } from "next/navigation"
+import JobCartSkeleton from '@/components/skeleton/JobCartSkeleton';
 
 const AppliedUser = () => {
     const params = useSearchParams();
     const jobId = params.get("jobId")
     const { data, isLoading, isError } = useGetJobByEmploymentQuery({ jobId })
 
-    if (isLoading) return <h3>Loading...</h3>
+    if (isLoading) return <Container className="mt-6"><JobCartSkeleton /></Container>
 
 
     return (

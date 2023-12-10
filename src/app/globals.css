@@ -83,7 +83,7 @@
   }
 
   .details-des {
-    @apply ml-4 text-base font-normal text-gray-600;
+    @apply ml-4 text-sm font-normal text-gray-600;
   }
   .job-summary-sub-title {
     @apply text-sm font-semibold text-black;
@@ -92,7 +92,7 @@
     @apply font-normal text-gray-700;
   }
   .active_link {
-    @apply text-green-500 font-bold border-b-2 border-green-500;
+    @apply font-bold text-green-500 border-b-2 border-green-500;
   }
 }
 

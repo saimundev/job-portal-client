@@ -108,7 +108,7 @@ const PostUserJob = () => {
             toast({
                 title: "Job create successful",
             })
-            router.push("/profile")
+            router.push("/post-job")
         }
 
     }, [isSuccess, toast])

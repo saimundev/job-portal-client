@@ -19,8 +19,18 @@ export const employmentApi = createApi({
         body: data,
       }),
     }),
+
+    getEmployment: builder.query<any, any>({
+      query: ({ userId }) => ({
+        method: "GET",
+        url: `employer/get-employment/${userId}`,
+      }),
+    }),
   }),
 });
 
-export const { useSignUpEmploymentMutation, useSignInEmploymentMutation } =
-  employmentApi;
+export const {
+  useSignUpEmploymentMutation,
+  useSignInEmploymentMutation,
+  useGetEmploymentQuery,
+} = employmentApi;

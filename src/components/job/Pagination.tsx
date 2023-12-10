@@ -71,7 +71,7 @@ const Pagination = ({ pagination }: { pagination: PaginationProps }) => {
 
                 </Button>
 
-                <Button variant="outline" disabled={Number(page) <= pagination.lastPage ? true : false} size="sm" onClick={() => router.push(`?page=${Number(page) + 1}&per_page=${per_page}&search=${search}&category=${category}&organization=${organization}&location=${location}&salary=${salary}&experience=${experience}&employmentType=${employmentType}`)}>
+                <Button variant="outline" disabled={Number(page) >= pagination.lastPage ? true : false} size="sm" onClick={() => router.push(`?page=${Number(page) + 1}&per_page=${per_page}&search=${search}&category=${category}&organization=${organization}&location=${location}&salary=${salary}&experience=${experience}&employmentType=${employmentType}`)}>
                     <ArrowRight />
                 </Button>
             </div>
