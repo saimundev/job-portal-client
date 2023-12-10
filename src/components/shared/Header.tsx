@@ -120,8 +120,14 @@ const Header = () => {
                         </DropdownMenu>
                     ) : ""}
 
-                    <div className="sm:hidden cursor-pointer" onClick={() => setShowNav((prev) => !prev)}>
-                        <HamburgerIcon />
+                    <div className="sm:hidden flex items-center gap-4 cursor-pointer" >
+                        <div className="" onClick={handleFavoriteRoute}>
+                            <Favorite className='cursor-pointer' />
+                        </div>
+                        <div className="" onClick={() => setShowNav((prev) => !prev)}>
+                            <HamburgerIcon />
+                        </div>
+
                     </div>
                 </div>
 
@@ -276,6 +282,8 @@ const Header = () => {
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 )}
+
+
 
                             </div>
                         </div>

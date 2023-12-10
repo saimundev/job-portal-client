@@ -14,7 +14,6 @@ import { division } from '@/data/data';
 import { Button } from '../ui/button';
 import { useRouter } from "next/navigation"
 import { jobInfoProps } from '@/types/types';
-import { serialize } from 'v8';
 import DisplayJobShowCase from './DisplayJobShowCase';
 
 const Banner = () => {
@@ -33,7 +32,7 @@ const Banner = () => {
     useEffect(() => {
         const fetchJobDataSearch = async () => {
             try {
-                const response = await fetch(search && `http://localhost:5050/api/job/suggestion-jobs?search=${search}`)
+                const response = await fetch(search && `${process.env.NEXT_PUBLIC_BASE_URL}job/suggestion-jobs?search=${search}`)
                 const data = await response.json();
                 setSearchResult(data)
 

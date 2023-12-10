@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const employmentApi = createApi({
   reducerPath: "employmentApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5050/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_BASE_URL }),
   endpoints: (builder) => ({
     signUpEmployment: builder.mutation<any, any>({
       query: (data) => ({

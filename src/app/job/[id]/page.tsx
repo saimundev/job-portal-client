@@ -19,7 +19,7 @@ type ParamsProps = {
 
 const getJobById = async (postId: string) => {
     try {
-        const response = await fetch(`http://localhost:5050/api/job/get-job/${postId}`, { cache: "no-cache" })
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}job/get-job/${postId}`, { cache: "no-cache" })
         return response.json();
     } catch (error) {
         throw new Error("something went wrong")
@@ -28,7 +28,7 @@ const getJobById = async (postId: string) => {
 
 //generate SSG
 export async function generateStaticParams() {
-    const data = await fetch('http://localhost:5050/api/job/get-jobs').then((res) => res.json())
+    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}job/get-jobs`).then((res) => res.json())
     return data?.jobs?.map((job: any) => ({
         id: job._id,
     }))
