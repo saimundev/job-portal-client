@@ -211,18 +211,18 @@ const ApplyForm = () => {
                         {/* resume field */}
                         <div className="">
                             <FormLabel>Upload resume</FormLabel>
-                            {logoImage ? <img className=" h-[150px] w-[150px] mx-auto rounded-full  object-cover" src={logoImage?.image_url} alt="" /> : <div {...getRootProps()} className={`${rejectionFile?.length && "border-red-500 "} border-input  place-items-center mt-2 grid w-full p-4 text-center border-2 border-dashed cursor-pointer`}>
+                            <div {...getRootProps()} className={`${rejectionFile?.length && "border-red-500 "} border-input  place-items-center mt-2 grid w-full p-4 text-center border-2 border-dashed cursor-pointer`}>
                                 <input  {...getInputProps()} />
                                 <div className="text-sm text-gray-500">
                                     <UploadIcon className="w-8 h-8 mx-auto" />
-                                    <div className="">
+                                    {!logoImage ? <div className="">
                                         {uploadStatus ? <div className="">Uploading...</div> : <div className=""> <p className="mt-4 font-semibold">Click to upload or drag and drop</p>
-                                            <p className="mt-2 text-xs">PNG, JPG or JPEG (MAX 5 MB)</p></div>}
-                                    </div>
+                                            <p className="mt-2 text-xs">Only Allow PDF (MAX 5 MB)</p></div>}
+                                    </div> : <div className=""><p className='mt-4 font-semibold'>Upload Successful</p></div>}
 
                                 </div>
                             </div>
-                            }
+
                             {/* file error message */}
                             <div className="">
                                 <label htmlFor=""></label>
